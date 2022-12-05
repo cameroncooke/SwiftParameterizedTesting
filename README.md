@@ -12,18 +12,18 @@ A parameterized test is a test that runs over and over again using different val
 
 ## Are there specific use-cases in mind?
 
-Yes, this kind of test automation is especially helpful when snapshot testing where you want to ensure you have a snapshot representation for each configuration of a view where they are many permutations, but this can also be used for logic testing.
+Yes, this kind of test automation is especially helpful when snapshot testing where you want to ensure you have a snapshot representation for each configuration of a view where there are many permutations, but this can also be used for logic testing.
 
 ## Won't I just end up with a single test failing in Xcode if any of the permutations fail?
 
-No, this is where the magic happens, `ParameterizedTesting` will dynamically create individual run-time tests for each permutation so that you know exactly which combination of values failed. When you run the test suite the each test will appear in the Xcode test navigator.
+No, this is where the magic happens, `ParameterizedTesting` will dynamically create individual run-time tests for each permutation so that you know exactly which combination of values failed. When you run the test suite tests will appear in the Xcode test navigator for each combination of values.
 
 ## Any warnings?
 
 Yes, please use this library carefully! It's very easy to end up with 1000s of run-time tests with just a few lines of code. Please be aware that the size of the test suite will grow exponentially for each additional set of values.
 
 ```swift
-    override class func values() -> ([WeatherData.Weather], [Int]) {
+    override class func values() -> ([WeatherData.Weather], [CelsiusTemperature]) {
         (
             [.raining, .sunny, .cloudy, .snowing],
             [12, 34, 3, 22, 0]
@@ -31,14 +31,14 @@ Yes, please use this library carefully! It's very easy to end up with 1000s of r
     }
 ```
 
-Above is a simple set of test values, two arrays of 4 and 5 values respectfully. This test alone will generate `4 * 5 = 20` tests. 
+Above is a simple set of test values, two arrays of 4 and 5 values respectfully. This test alone will generate `4 * 5 == 20` tests. 
 
 Now let's look at a larger test dataset:
 
 ```swift
     override class func values() -> (
         [String],
-        [Int],
+        [CelsiusTemperature],
         [String],
         [String],
         [Double],
@@ -95,13 +95,13 @@ Now let's look at a larger test dataset:
     }
 ```
 
-Above is a larger set of test values, 9 arrays of 4, 5, 2, 2, 2, 4, 2, 2, 2 values respectfully. This test will generate `4 * 5 * 2 * 2 * 2 * 4 * 2 * 2 * 2 = 5120` tests!
+Above is a larger set of test values, 9 arrays of 4, 5, 2, 2, 2, 4, 2, 2, 2 values respectfully. This test will generate `4 * 5 * 2 * 2 * 2 * 4 * 2 * 2 * 2 == 5120` tests!
 
-It's important that you really consider the value of the parameterized tests and use wisely. Even though can test every combination doesn't mean you should and in general you shouldn't.
+It's important that you really consider the value of the tests you are creating when using parameterized tests and use wisely. Even though you can test every combination doesn't mean you should and in general you shouldn't.
 
 ## Example usage
 
-To use, in your test target create a new Swift file and subclass one of the `ParameterizedTestCase` base classes. Say you want to create test permutations from two sets of data you would use the `ParameterizedTestCase2` base class as shown in the below example, you can use up to 9 datasets in total. Just use corresponding class name i.e. `ParameterizedTestCase9`
+In your test target create a new Swift file and subclass one of the `ParameterizedTestCase` base classes. Say you want to create test permutations from two sets of data you would use the `ParameterizedTestCase2` base class as shown in the below example. You can use up to 9 datasets in total, just use corresponding class name making note of the numeric suffix i.e. `ParameterizedTestCase9`.
 
 ```swift
 final class MySnapshotTests: ParameterizedTestCase2<Weather, CelsiusTemperature, Void> {
@@ -111,7 +111,7 @@ final class MySnapshotTests: ParameterizedTestCase2<Weather, CelsiusTemperature,
 
     // MARK: - Internal -
 
-    override class func values() -> ([Weather], [Int]) {
+    override class func values() -> ([Weather], [CelsiusTemperature]) {
         (
             [.raining, .sunny, .cloudy, .snowing],
             [12, 34, 3, 22, 0]
@@ -138,9 +138,9 @@ final class MySnapshotTests: ParameterizedTestCase2<Weather, CelsiusTemperature,
 }
 ```
 
-These classes use generics which you must define the types of when defining the class. In the above example the types of each dataset are defined as `<Weather, CelsiusTemperature, Void>`. The Void generic pamemter is a placeholder for an expected value which is only needed when creating logic tests. For snapshot tests it's not needed so here we seet this to void.
+The classes make use of generics, you must define the types of values for each set when defining the class. In the above example the types of each dataset are defined as `<Weather, CelsiusTemperature, Void>`. The `Void` generic pamemter is a placeholder for an expected value which is only needed when creating logic tests. For snapshot tests it's not needed so here we set it to void.
 
-It's important that you override `defaultTestSuite` and paste in the following code:
+It's important that you override `defaultTestSuite` by pasting in the following code:
 
 ```swift
     override class var defaultTestSuite: XCTestSuite {
@@ -150,7 +150,7 @@ It's important that you override `defaultTestSuite` and paste in the following c
 
 This is needed to workaround an issue when creating the run-time tests.
 
-Next just override the `testAllCombinations()` method, this will be autocompleted for you if using Xcode with the parameters already correctly typed. In your method just add the test logic that performs whichever test action you want with the injected values.
+Next just override the `testAllCombinations()` method, this will be autocompleted for you when using Xcode with the parameters already correctly typed. In your method just add the test logic that performs whichever test action you want using the injected values.
 
 
 More fully worked examples including logic tests can be found in [Tests/ExampleTests](Tests/ExampleTests)
