@@ -6,6 +6,47 @@
 
 ParameterizedTesting is a Swift library for executing parameterized tests using XCTest for iOS.
 
+## Installation
+
+If using SwiftPM add `.package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.0")` to your `Package.swift` file as shown in the example below:
+
+
+```swift
+// swift-tools-version:5.5
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+import PackageDescription
+
+let package = Package(
+    name: "MyLibrary",
+    products: [
+        .library(
+            name: "MyLibrary",
+            targets: ["MyLibrary"]
+        ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.0")
+    ],
+    targets: [
+        .target(
+            name: "MyLibrary",
+        ),
+        .testTarget(
+            name: "MyLibraryTests",
+            dependencies: [
+                "MyLibrary",
+                .product(name: "ParameterizedTesting", package: "SwiftParameterizedTesting"),
+            ]
+        ),
+    ]
+)
+
+```
+
+If using Xcode, add `https://github.com/cameroncooke/SwiftParameterizedTesting.git` to `Package Dependencies` in project settings.
+
+
 ## What are Parameterized tests?
 
 A parameterized test is a test that runs over and over again using different values.
