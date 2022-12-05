@@ -21,7 +21,7 @@ open class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
             { value1 in
 
                 let selector = ParameterizedTestCase1.registerTestMethod(
-                    name: "\(value1)".lowercased(),
+                    name: testName(value1),
                     testMethod: #selector(self.internalHandler)
                 )
 
@@ -54,6 +54,10 @@ open class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
 
     open class func expectedValues() -> [OUT]? {
         nil
+    }
+
+    open class func testName(_ value1: IN1) -> String {
+        "\(value1)".lowercased()
     }
 
     open func testAllCombinations(_ value1: IN1, _ expectedResult: OUT?) {

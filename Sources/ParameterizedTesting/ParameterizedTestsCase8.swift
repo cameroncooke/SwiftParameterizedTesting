@@ -29,8 +29,7 @@ open class ParameterizedTestCase8<IN1, IN2, IN3, IN4, IN5, IN6, IN7, IN8, OUT>: 
             { value1, value2, value3, value4, value5, value6, value7, value8 in
 
                 let selector = ParameterizedTestCase8.registerTestMethod(
-                    name: "\(value1)_\(value2)_\(value3)_\(value4)_\(value5)_\(value6)_\(value7)_\(value8)"
-                        .lowercased(),
+                    name: testName(value1, value2, value3, value4, value5, value6, value7, value8),
                     testMethod: #selector(self.internalHandler)
                 )
 
@@ -70,6 +69,19 @@ open class ParameterizedTestCase8<IN1, IN2, IN3, IN4, IN5, IN6, IN7, IN8, OUT>: 
 
     open class func expectedValues() -> [OUT]? {
         nil
+    }
+
+    open class func testName(
+        _ value1: IN1,
+        _ value2: IN2,
+        _ value3: IN3,
+        _ value4: IN4,
+        _ value5: IN5,
+        _ value6: IN6,
+        _ value7: IN7,
+        _ value8: IN8
+    ) -> String {
+        "\(value1)_\(value2)_\(value3)_\(value4)_\(value5)_\(value6)_\(value7)_\(value8)".lowercased()
     }
 
     open func testAllCombinations(
