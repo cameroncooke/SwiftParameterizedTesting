@@ -5,10 +5,10 @@
 
 import XCTest
 
-public class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
-    // MARK: - Public -
+open class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
+    // MARK: - Open -
 
-    public class func customTestSuite(_ subclassType: (some XCTestCase).Type) -> XCTestSuite {
+    open class func customTestSuite(_ subclassType: (some XCTestCase).Type) -> XCTestSuite {
         let suite = XCTestSuite(forTestCaseClass: Self.self)
         let params1 = values()
 
@@ -48,15 +48,15 @@ public class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
         return suite
     }
 
-    public class func values() -> ([IN1]) {
+    open class func values() -> ([IN1]) {
         fatalError("Not implemented")
     }
 
-    public class func expectedValues() -> [OUT]? {
+    open class func expectedValues() -> [OUT]? {
         nil
     }
 
-    public func testAllCombinations(_ value1: IN1, _ expectedResult: OUT?) {
+    open func testAllCombinations(_ value1: IN1, _ expectedResult: OUT?) {
         fatalError("Not implemented")
     }
 

@@ -10,7 +10,7 @@ ParameterizedTesting is a Swift library for executing parameterized tests using 
 
 ## Installation
 
-If using SwiftPM add `.package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.0")` to your `Package.swift` file as shown in the example below:
+If using SwiftPM add `.package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.2")` to your `Package.swift` file as shown in the example below:
 
 
 ```swift
@@ -28,7 +28,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.0")
+        .package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.2")
     ],
     targets: [
         .target(

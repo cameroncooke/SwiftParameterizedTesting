@@ -10,7 +10,7 @@ public enum ParameterizedTestHandler {
 
     private static var unused: [UNUSED] { [.unused] }
 
-    // MARK: - Public -
+    // MARK: - open -
 
     public static func allCombinations<IN1>(
         _ params1: [IN1],
