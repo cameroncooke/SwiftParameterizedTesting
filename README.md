@@ -3,6 +3,8 @@
 ![Run Tests](https://github.com/cameroncooke/SwiftParameterizedTesting/workflows/Swift/badge.svg)
 [![License](https://img.shields.io/badge/license-mit-brightgreen.svg)](https://en.wikipedia.org/wiki/MIT_License)
 [![codecov](https://codecov.io/gh/cameroncooke/SwiftParameterizedTesting/branch/main/graph/badge.svg?token=MPBFPN7OLI)](https://codecov.io/gh/cameroncooke/SwiftParameterizedTesting)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcameroncooke%2FSwiftParameterizedTesting%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/cameroncooke/SwiftParameterizedTesting)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcameroncooke%2FSwiftParameterizedTesting%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/cameroncooke/SwiftParameterizedTesting)
 
 ParameterizedTesting is a Swift library for executing parameterized tests using XCTest for iOS.
 
