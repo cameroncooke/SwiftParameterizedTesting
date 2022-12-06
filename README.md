@@ -48,6 +48,9 @@ let package = Package(
 
 If using Xcode, add `https://github.com/cameroncooke/SwiftParameterizedTesting.git` to `Package Dependencies` in project settings.
 
+## Demo
+
+![Demo](https://user-images.githubusercontent.com/630601/206025630-2d8f96d3-66ae-4bb9-8185-540006700db5.gif)
 
 ## What are Parameterized tests?
 
