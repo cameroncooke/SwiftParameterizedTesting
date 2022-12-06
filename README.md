@@ -8,45 +8,52 @@
 
 ParameterizedTesting is a Swift library for executing parameterized tests using XCTest.
 
+## Contents
+
+- [Installation](#installation)
+  - [Xcode](#xcode)
+  - [SwiftPM](#swiftpm)
+- [Demo](#demo)
+- [What are Parameterized tests?](#what-are-parameterized-tests)
+- [Are there specific use cases in mind?](#are-there-specific-use-cases-in-mind)
+- [Won't I just end up with a single test failing in Xcode if any of the permutations fail?](#wont-i-just-end-up-with-a-single-test-failing-in-xcode-if-any-of-the-permutations-fail)
+- [Any warnings?](#any-warnings)
+- [Example usage](#example-usage)
+  - [Snapshot testing](#snapshot-testing)
+  - [Logic testing](#logic-testing)
+- [Credits](#credits)
+
 ## Installation
 
-If using SwiftPM add `.package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.2")` to your `Package.swift` file as shown in the example below:
+### Xcode
+
+If using Xcode, add `https://github.com/cameroncooke/SwiftParameterizedTesting.git` to `Package Dependencies` list in your project's settings.
+
+### SwiftPM
+
+If you want to use SwiftParameterizedTesting in a project that uses SwiftPM, add the package as a dependency in Package.swift:
 
 
 ```swift
-// swift-tools-version:5.5
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
-import PackageDescription
-
-let package = Package(
-    name: "MyLibrary",
-    products: [
-        .library(
-            name: "MyLibrary",
-            targets: ["MyLibrary"]
-        ),
-    ],
-    dependencies: [
-        .package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.2")
-    ],
-    targets: [
-        .target(
-            name: "MyLibrary",
-        ),
-        .testTarget(
-            name: "MyLibraryTests",
-            dependencies: [
-                "MyLibrary",
-                .product(name: "ParameterizedTesting", package: "SwiftParameterizedTesting"),
-            ]
-        ),
-    ]
-)
-
+dependencies: [
+    .package(url: "https://github.com/cameroncooke/SwiftParameterizedTesting.git", from: "0.1.3")
+]
 ```
 
-If using Xcode, add `https://github.com/cameroncooke/SwiftParameterizedTesting.git` to `Package Dependencies` in project settings.
+Next, add ParameterizedTesting as a dependency of your test target:
+
+```swift
+targets: [
+  .target(name: "MyLibrary"),
+  .testTarget(
+    name: "MyLibraryTests",
+    dependencies: [
+      "MyLibrary",
+      .product(name: "ParameterizedTesting", package: "SwiftParameterizedTesting"),
+    ]
+  )
+]
+```
 
 ## Demo
 
@@ -56,7 +63,7 @@ If using Xcode, add `https://github.com/cameroncooke/SwiftParameterizedTesting.g
 
 A parameterized test is a test that runs over and over again using different values.
 
-## Are there specific use-cases in mind?
+## Are there specific use cases in mind?
 
 Yes, this kind of test automation is especially helpful when snapshot testing where you want to ensure you have a snapshot representation for each configuration of a view where there are many permutations, but this can also be used for logic testing.
 
@@ -141,13 +148,15 @@ Now let's look at a larger test dataset:
     }
 ```
 
-Above is a larger set of test values, 9 arrays of 4, 5, 2, 2, 2, 4, 2, 2, 2 values respectfully. This test will generate `4 * 5 * 2 * 2 * 2 * 4 * 2 * 2 * 2 == 5120` tests!
+Above is a larger set of test values, 9 arrays of 4, 5, 2, 2, 2, 4, 2, 2, 2 values respectively. This test will generate `4 * 5 * 2 * 2 * 2 * 4 * 2 * 2 * 2 == 5120` tests!
 
-It's important that you really consider the value of the tests you are creating when using parameterized tests and use wisely. Even though you can test every combination doesn't mean you should and in general you shouldn't.
+It's important that you really consider the value of the tests you are creating when using parameterized tests and use them wisely. Even though you can test every combination doesn't mean you should and in general, you shouldn't.
 
 ## Example usage
 
-In your test target create a new Swift file and subclass one of the `ParameterizedTestCase` base classes. Say you want to create test permutations from two sets of data you would use the `ParameterizedTestCase2` base class as shown in the below example. You can use up to 9 datasets in total, just use corresponding class name making note of the numeric suffix i.e. `ParameterizedTestCase9`.
+### Snapshot testing
+
+In your test target create a new Swift file and subclass one of the `ParameterizedTestCase` base classes. Say you want to create test permutations from two sets of data you would use the `ParameterizedTestCase2` base class as shown in the below example. You can use up to 9 datasets in total, just use the corresponding class name making note of the numeric suffix i.e. `ParameterizedTestCase9`.
 
 ```swift
 final class MySnapshotTests: ParameterizedTestCase2<Weather, CelsiusTemperature, Void> {
@@ -184,9 +193,9 @@ final class MySnapshotTests: ParameterizedTestCase2<Weather, CelsiusTemperature,
 }
 ```
 
-The classes make use of generics, you must define the types of values for each set when defining the class. In the above example the types of each dataset are defined as `<Weather, CelsiusTemperature, Void>`. The `Void` generic pamemter is a placeholder for an expected value which is only needed when creating logic tests. For snapshot tests it's not needed so here we set it to void.
+The classes make use of generics, you must define the types of values for each set when defining the class. In the above example, the types of each dataset are defined as `<Weather, CelsiusTemperature, Void>`. The `Void` generic parameter is a placeholder for an expected value which is only needed when creating logic tests. For snapshot tests, it's not needed so here we set it to void.
 
-It's important that you override `defaultTestSuite` by pasting in the following code:
+You must override `defaultTestSuite` by pasting in the following code:
 
 ```swift
     override class var defaultTestSuite: XCTestSuite {
@@ -194,12 +203,63 @@ It's important that you override `defaultTestSuite` by pasting in the following 
     }
 ```
 
-This is needed to workaround an issue when creating the run-time tests.
+This is needed to work around an issue when creating the run-time tests.
 
 Next just override the `testAllCombinations()` method, this will be autocompleted for you when using Xcode with the parameters already correctly typed. In your method just add the test logic that performs whichever test action you want using the injected values.
 
+### Logic testing
 
-More fully worked examples including logic tests can be found in [Tests/ExampleTests](Tests/ExampleTests)
+Another valid use case is logic testing. When writing logic tests you'll probably want to check the injected values against expected values. 
+
+```swift
+final class MyLogicTests: ParameterizedTestCase2<Weather, CelsiusTemperature, String> {
+    override class var defaultTestSuite: XCTestSuite {
+        customTestSuite(self)
+    }
+
+    // MARK: - Internal -
+
+    override class func values() -> ([WeatherData.Weather], [CelsiusTemperature]) {
+        (
+            [.raining, .sunny],
+            [12, 34, 3, 22, 0]
+        )
+    }
+
+    override class func expectedValues() -> [String] {
+        [
+            "It's raining and a mild 12 degrees celsius",
+            "It's raining and a hot 34 degrees celsius",
+            "It's raining and a cold 3 degrees celsius",
+            "It's raining and a comfortable 22 degrees celsius",
+            "It's raining and a freezing 0 degrees celsius",
+
+            "It's sunny and a mild 12 degrees celsius",
+            "It's sunny and a hot 34 degrees celsius",
+            "It's sunny and a cold 3 degrees celsius",
+            "It's sunny and a comfortable 22 degrees celsius",
+            "It's sunny and a freezing 0 degrees celsius",
+        ]
+    }
+
+    override func testAllCombinations(
+        _ weather: Weather,
+        _ temperature: CelsiusTemperature,
+        _ expectedResult: String?
+    ) {
+        let sut = WeatherData(weather: weather, temperature: temperature)
+        XCTAssertEqual(sut.summary, expectedResult)
+    }
+}
+```
+
+In the above example, unlike the snapshot testing example, we need to provide the third generic type that represents the type of expected value, instead of specifying `Void` we've specified `String`. 
+
+In the `testAllCombinations()` method we can then execute the system under test (`sut`) providing the `WeatherData` model with the injected `Weather` and `CelsiusTemperature` values.  
+
+We then assert that the generated "summary" String matches the expected result String. 
+
+Fully worked examples can be found in [Tests/ExampleTests](Tests/ExampleTests)
 
 ## Credits
 
