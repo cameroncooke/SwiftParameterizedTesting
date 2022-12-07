@@ -6,7 +6,7 @@
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcameroncooke%2FSwiftParameterizedTesting%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/cameroncooke/SwiftParameterizedTesting)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcameroncooke%2FSwiftParameterizedTesting%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/cameroncooke/SwiftParameterizedTesting)
 
-ParameterizedTesting is a Swift library for executing parameterized tests using XCTest.
+ParameterizedTesting allows you to easily create and run dynamic, run-time tests that test every combination of values from a given dataset. With this library, you can quickly and easily verify the behavior of your code with a wide range of input values, ensuring that your code is correct and robust. 
 
 ## Contents
 
@@ -61,15 +61,15 @@ targets: [
 
 ## What are Parameterized tests?
 
-A parameterized test is a test that runs over and over again using different values.
+A parameterized test is a type of test in which the same test is run multiple times with different input values. This allows the tester to verify that the software behaves correctly for a wide range of input values, without having to manually create a separate test case for each individual value. This can help save time and effort by avoiding the need to write and maintain many individual test cases.
+
+## Won't I just end up with a single test failing in Xcode if any of the permutations fail?
+
+No, this is where the magic happens, `ParameterizedTesting` will dynamically create individual run-time tests for each combination of values so that you know exactly which tests have passed or failed. When you run the test suite, tests will appear in the Xcode test navigator for each combination of values.
 
 ## Are there specific use cases in mind?
 
 Yes, this kind of test automation is especially helpful when snapshot testing where you want to ensure you have a snapshot representation for each configuration of a view where there are many permutations, but this can also be used for logic testing.
-
-## Won't I just end up with a single test failing in Xcode if any of the permutations fail?
-
-No, this is where the magic happens, `ParameterizedTesting` will dynamically create individual run-time tests for each permutation so that you know exactly which combination of values failed. When you run the test suite tests will appear in the Xcode test navigator for each combination of values.
 
 ## Any warnings?
 
