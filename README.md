@@ -14,9 +14,9 @@ ParameterizedTesting allows you to easily create and run dynamic, run-time tests
   - [Xcode](#xcode)
   - [SwiftPM](#swiftpm)
 - [Demo](#demo)
-- [What are Parameterized tests?](#what-are-parameterized-tests)
-- [Are there specific use cases in mind?](#are-there-specific-use-cases-in-mind)
+- [What are parameterized tests?](#what-are-parameterized-tests)
 - [Won't I just end up with a single test failing in Xcode if any of the permutations fail?](#wont-i-just-end-up-with-a-single-test-failing-in-xcode-if-any-of-the-permutations-fail)
+- [What use cases would suite parameterized testing?](#what-use-cases-would-suite-parameterized-testing)
 - [Any warnings?](#any-warnings)
 - [Example usage](#example-usage)
   - [Snapshot testing](#snapshot-testing)
@@ -59,7 +59,7 @@ targets: [
 
 ![Demo](https://user-images.githubusercontent.com/630601/206025630-2d8f96d3-66ae-4bb9-8185-540006700db5.gif)
 
-## What are Parameterized tests?
+## What are parameterized tests?
 
 A parameterized test is a type of test in which the same test is run multiple times with different input values. This allows the tester to verify that the software behaves correctly for a wide range of input values, without having to manually create a separate test case for each individual value. This can help save time and effort by avoiding the need to write and maintain many individual test cases.
 
@@ -67,7 +67,7 @@ A parameterized test is a type of test in which the same test is run multiple ti
 
 No, this is where the magic happens, `ParameterizedTesting` will dynamically create individual run-time tests for each combination of values so that you know exactly which tests have passed or failed. When you run the test suite, tests will appear in the Xcode test navigator for each combination of values.
 
-## Are there specific use cases in mind?
+## What use cases would suite parameterized testing?
 
 Yes, this kind of test automation is especially helpful when snapshot testing where you want to ensure you have a snapshot representation for each configuration of a view where there are many permutations, but this can also be used for logic testing.
 
