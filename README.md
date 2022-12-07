@@ -160,11 +160,6 @@ In your test target create a new Swift file and subclass one of the `Parameteriz
 
 ```swift
 final class MySnapshotTests: ParameterizedTestCase2<Weather, CelsiusTemperature, Void> {
-    override class var defaultTestSuite: XCTestSuite {
-        customTestSuite(self)
-    }
-
-    // MARK: - Internal -
 
     override class func values() -> ([Weather], [CelsiusTemperature]) {
         (
@@ -195,16 +190,6 @@ final class MySnapshotTests: ParameterizedTestCase2<Weather, CelsiusTemperature,
 
 The classes make use of generics, you must define the types of values for each set when defining the class. In the above example, the types of each dataset are defined as `<Weather, CelsiusTemperature, Void>`. The `Void` generic parameter is a placeholder for an expected value which is only needed when creating logic tests. For snapshot tests, it's not needed so here we set it to void.
 
-You must override `defaultTestSuite` by pasting in the following code:
-
-```swift
-    override class var defaultTestSuite: XCTestSuite {
-        customTestSuite(self)
-    }
-```
-
-This is needed to work around an issue when creating the run-time tests.
-
 Next just override the `testAllCombinations()` method, this will be autocompleted for you when using Xcode with the parameters already correctly typed. In your method just add the test logic that performs whichever test action you want using the injected values.
 
 ### Logic testing
@@ -213,11 +198,6 @@ Another valid use case is logic testing. When writing logic tests you'll probabl
 
 ```swift
 final class MyLogicTests: ParameterizedTestCase2<Weather, CelsiusTemperature, String> {
-    override class var defaultTestSuite: XCTestSuite {
-        customTestSuite(self)
-    }
-
-    // MARK: - Internal -
 
     override class func values() -> ([WeatherData.Weather], [CelsiusTemperature]) {
         (

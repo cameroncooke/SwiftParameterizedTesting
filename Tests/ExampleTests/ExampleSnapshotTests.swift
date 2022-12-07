@@ -9,10 +9,6 @@ import XCTest
 @testable import ParameterizedTesting
 
 final class ExampleSnapshotTests: ParameterizedTestCase3<Weather, Int, Theme, Void> {
-    override class var defaultTestSuite: XCTestSuite {
-        customTestSuite(self)
-    }
-
     // MARK: - Internal -
 
     override class func values() -> ([Weather], [Int], [Theme]) {
