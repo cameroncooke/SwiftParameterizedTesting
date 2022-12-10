@@ -10,18 +10,20 @@ ParameterizedTesting allows you to easily create and run dynamic, run-time tests
 
 ## Contents
 
-- [Installation](#installation)
-  - [Xcode](#xcode)
-  - [SwiftPM](#swiftpm)
-- [Demo](#demo)
-- [What are parameterized tests?](#what-are-parameterized-tests)
-- [Won't I just end up with a single test failing in Xcode if any of the permutations fail?](#wont-i-just-end-up-with-a-single-test-failing-in-xcode-if-any-of-the-permutations-fail)
-- [What use cases would suite parameterized testing?](#what-use-cases-would-suite-parameterized-testing)
-- [Any warnings?](#any-warnings)
-- [Example usage](#example-usage)
-  - [Snapshot testing](#snapshot-testing)
-  - [Logic testing](#logic-testing)
-- [Credits](#credits)
+  - [Installation](#installation)
+    - [Xcode](#xcode)
+    - [SwiftPM](#swiftpm)
+  - [Demo](#demo)
+  - [What are parameterized tests?](#what-are-parameterized-tests)
+  - [Won't I just end up with a single test failing in Xcode if any of the permutations fail?](#wont-i-just-end-up-with-a-single-test-failing-in-xcode-if-any-of-the-permutations-fail)
+  - [What use cases would suite parameterized testing?](#what-use-cases-would-suite-parameterized-testing)
+  - [Any warnings?](#any-warnings)
+  - [Example usage](#example-usage)
+    - [Snapshot testing](#snapshot-testing)
+    - [Logic testing](#logic-testing)
+    - [Custom test names](#custom-test-names)
+  - [Credits](#credits)
+  - [License](#license)
 
 ## Installation
 
@@ -69,11 +71,11 @@ No, this is where the magic happens, `ParameterizedTesting` will dynamically cre
 
 ## What use cases would suite parameterized testing?
 
-Yes, this kind of test automation is especially helpful when snapshot testing where you want to ensure you have a snapshot representation for each configuration of a view where there are many permutations, but this can also be used for logic testing.
+This kind of test automation is especially helpful when snapshot testing where you want to ensure you have a snapshot representation for each configuration of a view where there are many permutations, but this can also be used for logic testing.
 
 ## Any warnings?
 
-Yes, please use this library carefully! It's very easy to end up with 1000s of run-time tests with just a few lines of code. Please be aware that the size of the test suite will grow exponentially for each additional set of values.
+Please use this library carefully! It's very easy to end up with 1000s of run-time tests with just a few lines of code. Please be aware that the size of the test suite will grow exponentially for each additional set of values.
 
 ```swift
     override class func values() -> ([WeatherData.Weather], [CelsiusTemperature]) {
@@ -240,6 +242,19 @@ In the `testAllCombinations()` method we can then execute the system under test 
 We then assert that the generated "summary" String matches the expected result String. 
 
 Fully worked examples can be found in [Tests/ExampleTests](Tests/ExampleTests)
+
+### Custom test names
+
+By default the name of each run-time test will be `test_` followed by an underscore delimited string representation for each value. If any of the values do not conform to [CustomStringConvertible](https://developer.apple.com/documentation/swift/customstringconvertible) then the debug description will be used which will most likely be undesirable. In that case you can override the class method `class func testName(_:)` and create your own unique name for the given test values:
+
+```swift
+    override class func testName(_ value1: WeatherData.Weather, _ value2: Int) -> String {
+        "weather_\(WeatherData.Weather)_and_\(value2)_degrees"
+    }
+}
+```
+
+Note that you don't need to provide the `test_` suffix as this will be appended to whatever value is returned from `class func testName(_:)`.
 
 ## Credits
 
