@@ -254,7 +254,7 @@ By default the name of each run-time test will be `test_` followed by an undersc
 }
 ```
 
-Note that you don't need to provide the `test_` suffix as this will be appended to whatever value is returned from `class func testName(_:)`.
+Note that you don't need to provide the `test_` prefix as this will be appended to whatever value is returned from `class func testName(_:)`.
 
 ## Credits
 
