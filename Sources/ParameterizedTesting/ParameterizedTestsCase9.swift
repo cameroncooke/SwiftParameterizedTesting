@@ -117,7 +117,7 @@ open class ParameterizedTestCase9<IN1, IN2, IN3, IN4, IN5, IN6, IN7, IN8, IN9, O
 
     // MARK: - Private -
 
-    private static func customTestSuite(_ subclassType: (some XCTestCase).Type) -> XCTestSuite {
+    private static func customTestSuite<T: XCTestCase>(_ subclassType: T.Type) -> XCTestSuite {
         let suite = XCTestSuite(forTestCaseWithName: UUID().uuidString)
         let (params1, params2, params3, params4, params5, params6, params7, params8, params9) = values()
 
@@ -160,7 +160,7 @@ open class ParameterizedTestCase9<IN1, IN2, IN3, IN4, IN5, IN6, IN7, IN8, IN9, O
                 test.setValue(value8, forKey: ParameterizedTestCaseKey.value8)
                 test.setValue(value9, forKey: ParameterizedTestCaseKey.value9)
 
-                if let expectedValues {
+                if let expectedValues = expectedValues {
                     if expectedValues.count == totalCombinations {
                         let expectedValue = expectedValues[counter]
                         test.setValue(expectedValue, forKey: ParameterizedTestCaseKey.expectedValue)
