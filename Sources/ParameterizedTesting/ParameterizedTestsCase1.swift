@@ -5,7 +5,7 @@
 
 import XCTest
 
-open class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
+open class ParameterizedTestCase1<IN1, OUT>: ParameterizedTestCase {
     // MARK: - Open -
 
     open override class var defaultTestSuite: XCTestSuite {
@@ -20,8 +20,14 @@ open class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
         nil
     }
 
-    open class func testName(_ value1: IN1) -> String {
-        "\(value1)".lowercased()
+    open class func testName(
+        _ value1: IN1
+    ) -> String {
+        testName(
+            for: [
+                value1,
+            ]
+        )
     }
 
     open func testAllCombinations(_ value1: IN1, _ expectedResult: OUT?) {
@@ -31,11 +37,11 @@ open class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
     // MARK: - Internal -
 
     func getValue1() -> IN1? {
-        getValue(forKey: &ParameterizedTestCaseKey.value1)
+        getValue(forKey: ParameterizedTestCaseKey.value1)
     }
 
     func getExpectedValue() -> OUT? {
-        getValue(forKey: &ParameterizedTestCaseKey.expectedValue)
+        getValue(forKey: ParameterizedTestCaseKey.expectedValue)
     }
 
     @objc
@@ -64,16 +70,21 @@ open class ParameterizedTestCase1<IN1, OUT>: XCTestCase {
 
                 let selector = ParameterizedTestCase1.registerTestMethod(
                     name: testName(value1),
-                    testMethod: #selector(self.internalHandler)
+                    testMethod: #selector(self.internalHandler),
+                    separator: testNameFieldSeparator
                 )
 
-                let test = subclassType.init(selector: selector)
-                test.setValue(value: value1, forKey: &ParameterizedTestCaseKey.value1)
+                let testCase = subclassType.init(selector: selector)
+                guard let test = testCase as? ParameterizedTestCase else {
+                    fatalError("Unable to instantiate XCTestCase")
+                }
+                
+                test.setValue(value1, forKey: ParameterizedTestCaseKey.value1)
 
                 if let expectedValues {
                     if expectedValues.count == totalCombinations {
                         let expectedValue = expectedValues[counter]
-                        test.setValue(value: expectedValue, forKey: &ParameterizedTestCaseKey.expectedValue)
+                        test.setValue(expectedValue, forKey: ParameterizedTestCaseKey.expectedValue)
 
                     } else {
                         preconditionFailure(

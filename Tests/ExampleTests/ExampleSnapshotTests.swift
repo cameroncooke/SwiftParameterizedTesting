@@ -34,6 +34,7 @@ final class ExampleSnapshotTests: ParameterizedTestCase3<Weather, Int, Theme, Vo
         )
 
 #if os(iOS) || os(tvOS)
+        // Recorded on iPhone 14 (iOS 16.x)
         assertSnapshot(
             matching: view,
             as: .image(
